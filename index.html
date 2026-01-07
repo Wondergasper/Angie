@@ -60,21 +60,20 @@
     </header>
 
     <!-- ============================================
-         HERO SECTION
+         HERO SECTION - Editorial Magazine Style
          ============================================ -->
     <section class="hero" id="hero">
-        <div class="hero-content">
-            <h1 class="reveal">
-                Call Me <span class="highlight">Angie</span>
-            </h1>
-            <p class="tagline">Global Media Babe</p>
-            <p class="intro-text">
-                Purpose-driven storytelling, strategic creativity, and authentic global connection.
-                I help brands and individuals find their voice and amplify their impact.
-            </p>
-            <a href="#contact" class="primary-btn pulse">Work With Angie</a>
+        <div class="hero-title">
+            <span class="tagline">Global Media Babe</span>
+            <h1>Call<br>Me<br><span class="accent-text">Angie.</span></h1>
+            <a href="#contact" class="primary-btn pulse hero-cta">Work With Angie</a>
         </div>
-
+        <div class="hero-image-container">
+            <div class="hero-image-placeholder">
+                <span>[ High Fashion Portrait ]</span>
+            </div>
+            <!-- Replace placeholder with: <img src="images/angie-hero.jpg" alt="Angie - Global Media Babe" /> -->
+        </div>
         <div class="scroll-indicator">
             <span>Scroll</span>
             <div class="arrow"></div>
@@ -82,20 +81,19 @@
     </section>
 
     <!-- ============================================
-         ABOUT / BRAND STORY SECTION
+         ABOUT SECTION - Editorial Style
          ============================================ -->
-    <section id="about" class="section reveal">
-        <div class="about-content">
-            <h2>Brand Story</h2>
-            <p class="about-text">
-                <strong>Angie</strong> is a global media personality and brand strategist who believes in the power of
-                <strong>authentic storytelling</strong>. Rooted in faith, fueled by purpose, and driven by creativity —
-                I specialize in crafting compelling narratives that connect, inspire, and convert.
-                <br><br>
-                From digital marketing campaigns to personal brand development and event hosting,
-                I bring a unique blend of <em>strategy, style, and soul</em> to every project.
+    <section id="about" class="editorial-section reveal">
+        <div class="side-text">Authenticity • Faith • Strategy</div>
+        <div class="content-block">
+            <h2>The Art of Connection</h2>
+            <p>
+                I bridge the gap between corporate strategy and creative soul.
+                As <strong>Okechukwu Angel Onyinyechi</strong>, I've built a brand that speaks
+                the language of impact. From hosting high-level sessions to
+                architecting digital campaigns that shatter algorithms—I don't just
+                create content; I curate experiences.
             </p>
-
             <div class="brand-values stagger-children">
                 <span class="value-tag">Global</span>
                 <span class="value-tag">Purposeful</span>
@@ -255,7 +253,7 @@
     </section>
 
     <!-- ============================================
-         GALLERY SECTION
+         GALLERY SECTION - Premium Media Gallery
          ============================================ -->
     <section id="gallery" class="section reveal">
         <div class="section-header">
@@ -265,21 +263,238 @@
             </p>
         </div>
 
-        <div class="gallery-grid stagger-children">
-            <div class="gallery-item">
-                <img src="images/angie-1.jpg" alt="Angie portrait - confident and elegant" loading="lazy" />
+        <!-- Gallery Filter Tabs -->
+        <div class="gallery-filters">
+            <button class="filter-btn active" data-filter="all">
+                <span class="filter-icon">✦</span>
+                All
+            </button>
+            <button class="filter-btn" data-filter="image">
+                <span class="filter-icon">◐</span>
+                Images
+            </button>
+            <button class="filter-btn" data-filter="video">
+                <span class="filter-icon">▶</span>
+                Videos
+            </button>
+        </div>
+
+        <!-- Masonry Media Grid -->
+        <div class="media-gallery stagger-children">
+            <!-- Featured Image - Large -->
+            <div class="media-item featured" data-type="image" data-src="images/angie-1.jpg"
+                data-caption="Confident & Elegant">
+                <div class="media-wrapper">
+                    <img src="images/angie-1.jpg" alt="Angie portrait - confident and elegant" loading="lazy" />
+                    <div class="media-overlay">
+                        <span class="media-badge">Photo</span>
+                        <div class="media-info">
+                            <h4>Confident & Elegant</h4>
+                            <p>Brand Portrait</p>
+                        </div>
+                        <button class="media-expand" aria-label="View full size">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
             </div>
-            <div class="gallery-item">
-                <img src="images/angie-2.jpg" alt="Angie speaking at an event" loading="lazy" />
+
+            <!-- Video Item -->
+            <div class="media-item" data-type="video" data-src="videos/angie-speaking.mp4"
+                data-caption="Speaking at RCCG Event">
+                <div class="media-wrapper">
+                    <video src="videos/angie-speaking.mp4" poster="images/angie-2.jpg" muted loop
+                        preload="metadata"></video>
+                    <div class="video-play-overlay">
+                        <div class="play-button">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M8 5v14l11-7z" />
+                            </svg>
+                        </div>
+                        <div class="play-ripple"></div>
+                    </div>
+                    <div class="media-overlay">
+                        <span class="media-badge video-badge">Video</span>
+                        <div class="media-info">
+                            <h4>Speaking at RCCG</h4>
+                            <p>Event Hosting</p>
+                        </div>
+                        <button class="media-expand" aria-label="View full size">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
             </div>
-            <div class="gallery-item">
-                <img src="images/angie-3.jpg" alt="Angie hosting a brand event" loading="lazy" />
+
+            <!-- Image Item -->
+            <div class="media-item" data-type="image" data-src="images/angie-3.jpg" data-caption="Brand Event Hosting">
+                <div class="media-wrapper">
+                    <img src="images/angie-3.jpg" alt="Angie hosting a brand event" loading="lazy" />
+                    <div class="media-overlay">
+                        <span class="media-badge">Photo</span>
+                        <div class="media-info">
+                            <h4>Brand Event</h4>
+                            <p>Hosting Excellence</p>
+                        </div>
+                        <button class="media-expand" aria-label="View full size">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
             </div>
-            <div class="gallery-item">
-                <img src="images/angie-4.jpg" alt="Angie lifestyle shot" loading="lazy" />
+
+            <!-- Video Item - Short Form -->
+            <div class="media-item tall" data-type="video" data-src="videos/angie-reel.mp4"
+                data-caption="Behind the Scenes Reel">
+                <div class="media-wrapper">
+                    <video src="videos/angie-reel.mp4" poster="images/angie-4.jpg" muted loop
+                        preload="metadata"></video>
+                    <div class="video-play-overlay">
+                        <div class="play-button">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M8 5v14l11-7z" />
+                            </svg>
+                        </div>
+                        <div class="play-ripple"></div>
+                    </div>
+                    <div class="media-overlay">
+                        <span class="media-badge video-badge">Reel</span>
+                        <div class="media-info">
+                            <h4>Behind the Scenes</h4>
+                            <p>Content Creation</p>
+                        </div>
+                        <button class="media-expand" aria-label="View full size">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Image Item -->
+            <div class="media-item" data-type="image" data-src="images/angie-5.jpg" data-caption="Lifestyle & Elegance">
+                <div class="media-wrapper">
+                    <img src="images/angie-5.jpg" alt="Angie lifestyle shot" loading="lazy" />
+                    <div class="media-overlay">
+                        <span class="media-badge">Photo</span>
+                        <div class="media-info">
+                            <h4>Lifestyle</h4>
+                            <p>Authentic Moments</p>
+                        </div>
+                        <button class="media-expand" aria-label="View full size">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Video Item -->
+            <div class="media-item wide" data-type="video" data-src="videos/angie-collab.mp4"
+                data-caption="Collaboration Highlight">
+                <div class="media-wrapper">
+                    <video src="videos/angie-collab.mp4" poster="images/angie-6.jpg" muted loop
+                        preload="metadata"></video>
+                    <div class="video-play-overlay">
+                        <div class="play-button">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M8 5v14l11-7z" />
+                            </svg>
+                        </div>
+                        <div class="play-ripple"></div>
+                    </div>
+                    <div class="media-overlay">
+                        <span class="media-badge video-badge">Video</span>
+                        <div class="media-info">
+                            <h4>Collaboration</h4>
+                            <p>Brand Partnership</p>
+                        </div>
+                        <button class="media-expand" aria-label="View full size">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Image Item -->
+            <div class="media-item" data-type="image" data-src="images/angie-7.jpg" data-caption="Creative Direction">
+                <div class="media-wrapper">
+                    <img src="images/angie-7.jpg" alt="Angie creative direction" loading="lazy" />
+                    <div class="media-overlay">
+                        <span class="media-badge">Photo</span>
+                        <div class="media-info">
+                            <h4>Creative Direction</h4>
+                            <p>Visual Storytelling</p>
+                        </div>
+                        <button class="media-expand" aria-label="View full size">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Image Item -->
+            <div class="media-item" data-type="image" data-src="images/angie-8.jpg" data-caption="Global Presence">
+                <div class="media-wrapper">
+                    <img src="images/angie-8.jpg" alt="Angie global presence" loading="lazy" />
+                    <div class="media-overlay">
+                        <span class="media-badge">Photo</span>
+                        <div class="media-info">
+                            <h4>Global Presence</h4>
+                            <p>International Reach</p>
+                        </div>
+                        <button class="media-expand" aria-label="View full size">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
+
+    <!-- Lightbox Modal -->
+    <div class="lightbox" id="lightbox">
+        <div class="lightbox-backdrop"></div>
+        <div class="lightbox-container">
+            <button class="lightbox-close" aria-label="Close lightbox">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 6L6 18M6 6l12 12" />
+                </svg>
+            </button>
+            <button class="lightbox-nav lightbox-prev" aria-label="Previous">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M15 18l-6-6 6-6" />
+                </svg>
+            </button>
+            <button class="lightbox-nav lightbox-next" aria-label="Next">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 18l6-6-6-6" />
+                </svg>
+            </button>
+            <div class="lightbox-content">
+                <img class="lightbox-image" src="" alt="" />
+                <video class="lightbox-video" src="" controls></video>
+            </div>
+            <div class="lightbox-caption">
+                <h4 class="lightbox-title"></h4>
+                <span class="lightbox-counter"></span>
+            </div>
+        </div>
+    </div>
 
     <!-- ============================================
          INSTAGRAM EMBED SECTION

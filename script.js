@@ -14,6 +14,8 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeParallax();
     initializeCountUp();
     initializeImageLazyLoad();
+    initializeMediaGallery();
+    initializeLightbox();
 });
 
 // ============================================
@@ -521,5 +523,245 @@ function initializeTypingEffect() {
 // Uncomment to enable typing effect:
 // document.addEventListener('DOMContentLoaded', initializeTypingEffect);
 
+// ============================================
+// Media Gallery - Filters & Video Hover
+// ============================================
+function initializeMediaGallery() {
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const mediaItems = document.querySelectorAll('.media-item');
+    const videos = document.querySelectorAll('.media-item[data-type="video"] video');
+
+    // Filter functionality
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            // Update active state
+            filterBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            const filter = btn.dataset.filter;
+
+            // Animate and filter items
+            mediaItems.forEach((item, index) => {
+                const type = item.dataset.type;
+                const shouldShow = filter === 'all' || type === filter;
+
+                if (shouldShow) {
+                    item.classList.remove('hidden', 'filtering-out');
+                    item.style.transitionDelay = `${index * 50}ms`;
+                } else {
+                    item.classList.add('filtering-out');
+                    setTimeout(() => {
+                        item.classList.add('hidden');
+                        item.classList.remove('filtering-out');
+                    }, 300);
+                }
+            });
+        });
+    });
+
+    // Video hover preview effect
+    videos.forEach(video => {
+        const mediaItem = video.closest('.media-item');
+
+        mediaItem.addEventListener('mouseenter', () => {
+            video.play().catch(() => {
+                // Autoplay might be blocked, that's okay
+            });
+        });
+
+        mediaItem.addEventListener('mouseleave', () => {
+            video.pause();
+            video.currentTime = 0;
+        });
+    });
+
+    // Touch support for mobile video preview
+    videos.forEach(video => {
+        const mediaItem = video.closest('.media-item');
+        let touchTimeout;
+
+        mediaItem.addEventListener('touchstart', () => {
+            touchTimeout = setTimeout(() => {
+                video.play().catch(() => { });
+            }, 200);
+        }, { passive: true });
+
+        mediaItem.addEventListener('touchend', () => {
+            clearTimeout(touchTimeout);
+            video.pause();
+            video.currentTime = 0;
+        }, { passive: true });
+    });
+}
+
+// ============================================
+// Lightbox Modal
+// ============================================
+function initializeLightbox() {
+    const lightbox = document.getElementById('lightbox');
+    if (!lightbox) return;
+
+    const backdrop = lightbox.querySelector('.lightbox-backdrop');
+    const closeBtn = lightbox.querySelector('.lightbox-close');
+    const prevBtn = lightbox.querySelector('.lightbox-prev');
+    const nextBtn = lightbox.querySelector('.lightbox-next');
+    const lightboxImage = lightbox.querySelector('.lightbox-image');
+    const lightboxVideo = lightbox.querySelector('.lightbox-video');
+    const lightboxTitle = lightbox.querySelector('.lightbox-title');
+    const lightboxCounter = lightbox.querySelector('.lightbox-counter');
+
+    const mediaItems = document.querySelectorAll('.media-item');
+    let currentIndex = 0;
+    let mediaList = [];
+
+    // Build media list
+    const buildMediaList = () => {
+        mediaList = [];
+        document.querySelectorAll('.media-item:not(.hidden)').forEach((item, index) => {
+            mediaList.push({
+                type: item.dataset.type,
+                src: item.dataset.src,
+                caption: item.dataset.caption,
+                element: item
+            });
+        });
+    };
+
+    // Open lightbox
+    const openLightbox = (index) => {
+        buildMediaList();
+        currentIndex = index;
+        updateLightboxContent();
+        lightbox.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    };
+
+    // Close lightbox
+    const closeLightbox = () => {
+        lightbox.classList.remove('active');
+        document.body.style.overflow = '';
+
+        // Pause video if playing
+        lightboxVideo.pause();
+        lightboxVideo.src = '';
+    };
+
+    // Update lightbox content
+    const updateLightboxContent = () => {
+        const media = mediaList[currentIndex];
+        if (!media) return;
+
+        // Reset visibility
+        lightboxImage.classList.remove('active');
+        lightboxVideo.classList.remove('active');
+
+        if (media.type === 'video') {
+            lightboxVideo.src = media.src;
+            lightboxVideo.classList.add('active');
+            lightboxImage.classList.remove('active');
+        } else {
+            lightboxImage.src = media.src;
+            lightboxImage.alt = media.caption || '';
+            lightboxImage.classList.add('active');
+            lightboxVideo.classList.remove('active');
+            lightboxVideo.pause();
+        }
+
+        lightboxTitle.textContent = media.caption || '';
+        lightboxCounter.textContent = `${currentIndex + 1} / ${mediaList.length}`;
+    };
+
+    // Navigate
+    const goToPrev = () => {
+        lightboxVideo.pause();
+        currentIndex = currentIndex > 0 ? currentIndex - 1 : mediaList.length - 1;
+        updateLightboxContent();
+    };
+
+    const goToNext = () => {
+        lightboxVideo.pause();
+        currentIndex = currentIndex < mediaList.length - 1 ? currentIndex + 1 : 0;
+        updateLightboxContent();
+    };
+
+    // Event listeners for opening lightbox
+    mediaItems.forEach((item, index) => {
+        // Click on expand button
+        const expandBtn = item.querySelector('.media-expand');
+        if (expandBtn) {
+            expandBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                openLightbox(index);
+            });
+        }
+
+        // Click on play button for videos
+        const playButton = item.querySelector('.play-button');
+        if (playButton) {
+            playButton.addEventListener('click', (e) => {
+                e.stopPropagation();
+                openLightbox(index);
+            });
+        }
+
+        // Double-click on item
+        item.addEventListener('dblclick', () => {
+            openLightbox(index);
+        });
+    });
+
+    // Close events
+    closeBtn.addEventListener('click', closeLightbox);
+    backdrop.addEventListener('click', closeLightbox);
+
+    // Navigation events
+    prevBtn.addEventListener('click', goToPrev);
+    nextBtn.addEventListener('click', goToNext);
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+
+        switch (e.key) {
+            case 'Escape':
+                closeLightbox();
+                break;
+            case 'ArrowLeft':
+                goToPrev();
+                break;
+            case 'ArrowRight':
+                goToNext();
+                break;
+        }
+    });
+
+    // Touch swipe support
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    lightbox.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    lightbox.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+    }, { passive: true });
+
+    const handleSwipe = () => {
+        const swipeThreshold = 50;
+        const diff = touchStartX - touchEndX;
+
+        if (Math.abs(diff) > swipeThreshold) {
+            if (diff > 0) {
+                goToNext();
+            } else {
+                goToPrev();
+            }
+        }
+    };
+}
+
 console.log('✨ Angie Portfolio - Global Media Babe ✨');
 console.log('Design & Development: Premium Experience Loaded');
+
