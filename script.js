@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeImageLazyLoad();
     initializeMediaGallery();
     initializeLightbox();
+    initializeMobileCarousel();
 });
 
 // ============================================
@@ -760,6 +761,176 @@ function initializeLightbox() {
             }
         }
     };
+}
+
+// ============================================
+// Mobile Carousel for Gallery
+// ============================================
+function initializeMobileCarousel() {
+    const gallery = document.querySelector('.media-gallery');
+    const dotsContainer = document.getElementById('carousel-dots');
+    const counterElement = document.getElementById('carousel-counter');
+
+    if (!gallery || !dotsContainer || !counterElement) return;
+
+    let mediaItems = [];
+    let currentIndex = 0;
+    let isMobile = window.innerWidth <= 768;
+
+    // Build dots and setup
+    const setupCarousel = () => {
+        mediaItems = Array.from(gallery.querySelectorAll('.media-item:not(.hidden)'));
+        const totalItems = mediaItems.length;
+
+        // Clear existing dots
+        dotsContainer.innerHTML = '';
+
+        if (!isMobile || totalItems === 0) return;
+
+        // Create dots (max 10 dots for usability, show subset)
+        const maxDots = Math.min(totalItems, 10);
+        for (let i = 0; i < maxDots; i++) {
+            const dot = document.createElement('button');
+            dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+            dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+            dot.addEventListener('click', () => scrollToItem(i));
+            dotsContainer.appendChild(dot);
+        }
+
+        // Update counter
+        updateCounter(0);
+    };
+
+    // Scroll to specific item
+    const scrollToItem = (index) => {
+        if (index < 0 || index >= mediaItems.length) return;
+
+        const item = mediaItems[index];
+        if (!item) return;
+
+        const galleryRect = gallery.getBoundingClientRect();
+        const itemRect = item.getBoundingClientRect();
+        const scrollLeft = gallery.scrollLeft + (itemRect.left - galleryRect.left) - (galleryRect.width - itemRect.width) / 2;
+
+        gallery.scrollTo({
+            left: scrollLeft,
+            behavior: 'smooth'
+        });
+    };
+
+    // Update active dot and counter
+    const updateIndicators = () => {
+        if (!isMobile) return;
+
+        const galleryRect = gallery.getBoundingClientRect();
+        const galleryCenter = galleryRect.left + galleryRect.width / 2;
+
+        let closestIndex = 0;
+        let closestDistance = Infinity;
+
+        mediaItems.forEach((item, index) => {
+            const rect = item.getBoundingClientRect();
+            const itemCenter = rect.left + rect.width / 2;
+            const distance = Math.abs(galleryCenter - itemCenter);
+
+            if (distance < closestDistance) {
+                closestDistance = distance;
+                closestIndex = index;
+            }
+        });
+
+        if (closestIndex !== currentIndex) {
+            currentIndex = closestIndex;
+            updateDots(currentIndex);
+            updateCounter(currentIndex);
+        }
+    };
+
+    // Update dots
+    const updateDots = (activeIndex) => {
+        const dots = dotsContainer.querySelectorAll('.carousel-dot');
+        const maxDots = dots.length;
+
+        if (maxDots === 0) return;
+
+        // Map activeIndex to dot index if we have less dots than items
+        const dotIndex = Math.min(activeIndex, maxDots - 1);
+
+        dots.forEach((dot, i) => {
+            dot.classList.toggle('active', i === dotIndex);
+        });
+    };
+
+    // Update counter
+    const updateCounter = (index) => {
+        counterElement.textContent = `${index + 1} / ${mediaItems.length}`;
+    };
+
+    // Handle scroll
+    let scrollTimeout;
+    gallery.addEventListener('scroll', () => {
+        if (!isMobile) return;
+
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(updateIndicators, 50);
+    }, { passive: true });
+
+    // Handle resize
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            const wasMobile = isMobile;
+            isMobile = window.innerWidth <= 768;
+
+            if (isMobile !== wasMobile) {
+                setupCarousel();
+            }
+        }, 150);
+    });
+
+    // Handle filter changes - rebuild carousel
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            // Wait for filter animation
+            setTimeout(() => {
+                setupCarousel();
+                // Scroll to first item
+                if (isMobile && mediaItems.length > 0) {
+                    gallery.scrollTo({ left: 0, behavior: 'smooth' });
+                    currentIndex = 0;
+                    updateDots(0);
+                    updateCounter(0);
+                }
+            }, 350);
+        });
+    });
+
+    // Initial setup
+    setupCarousel();
+
+    // Tap to open lightbox on mobile
+    if (isMobile) {
+        mediaItems.forEach((item, index) => {
+            item.addEventListener('click', (e) => {
+                // Prevent if scrolling
+                if (Math.abs(gallery.scrollLeft - item.offsetLeft + gallery.offsetWidth / 2 - item.offsetWidth / 2) > 50) {
+                    return;
+                }
+
+                // Open lightbox
+                const lightbox = document.getElementById('lightbox');
+                if (lightbox && lightbox.classList) {
+                    // Trigger lightbox
+                    const expandBtn = item.querySelector('.media-expand');
+                    if (expandBtn) {
+                        expandBtn.click();
+                    }
+                }
+            });
+        });
+    }
 }
 
 console.log('✨ Angie Portfolio - Global Media Babe ✨');
