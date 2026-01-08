@@ -2003,23 +2003,41 @@ footer span {
         grid-template-columns: 1fr;
     }
 
-    /* Media Gallery Responsive */
+    /* Media Gallery Responsive - Tablet/Mobile */
     .gallery-filters {
-        gap: var(--space-xs);
+        gap: 8px;
+        padding: 0 var(--space-sm);
+        margin-bottom: var(--space-lg);
     }
 
     .filter-btn {
-        padding: 0.6rem 1rem;
+        padding: 0.7rem 1.2rem;
+        font-size: 0.85rem;
+        flex: 1;
+        min-width: 90px;
+        justify-content: center;
+    }
+
+    .filter-icon {
         font-size: 0.8rem;
     }
 
     .media-gallery {
         grid-template-columns: repeat(2, 1fr);
-        grid-auto-rows: 180px;
-        gap: var(--space-sm);
+        grid-auto-rows: 200px;
+        gap: 12px;
+        padding: 0 var(--space-xs);
     }
 
-    .media-item.featured,
+    .media-item {
+        border-radius: var(--radius-md);
+    }
+
+    .media-item.featured {
+        grid-column: span 2;
+        grid-row: span 1;
+    }
+
     .media-item.wide {
         grid-column: span 2;
     }
@@ -2028,33 +2046,67 @@ footer span {
         grid-row: span 2;
     }
 
+    /* Always show overlay on mobile for better UX */
+    .media-overlay {
+        opacity: 1;
+        background: linear-gradient(180deg,
+                rgba(0, 31, 63, 0.05) 0%,
+                transparent 30%,
+                transparent 50%,
+                rgba(0, 31, 63, 0.9) 100%);
+    }
+
+    .media-info h4,
+    .media-info p {
+        transform: translateY(0);
+    }
+
+    .media-badge {
+        padding: 4px 10px;
+        font-size: 0.6rem;
+    }
+
     .play-button {
-        width: 55px;
-        height: 55px;
+        width: 50px;
+        height: 50px;
     }
 
     .play-button svg {
-        width: 22px;
-        height: 22px;
+        width: 20px;
+        height: 20px;
+        margin-left: 3px;
     }
 
     .play-ripple {
-        width: 55px;
-        height: 55px;
+        width: 50px;
+        height: 50px;
+    }
+
+    .media-info {
+        padding-bottom: 0;
     }
 
     .media-info h4 {
-        font-size: 1rem;
+        font-size: 0.95rem;
+        margin-bottom: 2px;
+    }
+
+    .media-info p {
+        font-size: 0.75rem;
     }
 
     .media-expand {
-        width: 36px;
-        height: 36px;
+        display: none;
+        /* Hide expand on mobile, tap opens lightbox */
     }
 
-    .media-expand svg {
-        width: 16px;
-        height: 16px;
+    .media-item:hover {
+        transform: none;
+        /* Disable hover lift on touch devices */
+    }
+
+    .media-item:active {
+        transform: scale(0.98);
     }
 
     /* Lightbox Mobile */
@@ -2193,7 +2245,14 @@ footer span {
     /* Media Gallery Small Screens */
     .media-gallery {
         grid-template-columns: 1fr;
-        grid-auto-rows: 280px;
+        grid-auto-rows: auto;
+        gap: 16px;
+        padding: 0;
+    }
+
+    .media-item {
+        min-height: 280px;
+        max-height: 400px;
     }
 
     .media-item.featured,
@@ -2201,24 +2260,55 @@ footer span {
     .media-item.tall {
         grid-column: span 1;
         grid-row: span 1;
+        min-height: 320px;
+    }
+
+    /* Make video items taller for better viewing */
+    .media-item[data-type="video"] {
+        min-height: 300px;
     }
 
     .gallery-filters {
         flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: center;
+        flex-wrap: nowrap;
+        justify-content: stretch;
+        gap: 6px;
+        padding: 0;
     }
 
     .filter-btn {
         flex: 1;
-        min-width: 100px;
-        max-width: none;
-        padding: 0.5rem 0.8rem;
+        min-width: 0;
+        padding: 0.6rem 0.5rem;
         font-size: 0.75rem;
+        gap: 5px;
     }
 
     .filter-icon {
         font-size: 0.7rem;
+    }
+
+    .media-info h4 {
+        font-size: 1rem;
+    }
+
+    .media-info p {
+        font-size: 0.8rem;
+    }
+
+    .play-button {
+        width: 60px;
+        height: 60px;
+    }
+
+    .play-button svg {
+        width: 24px;
+        height: 24px;
+    }
+
+    .play-ripple {
+        width: 60px;
+        height: 60px;
     }
 
     /* Cards Mobile */
